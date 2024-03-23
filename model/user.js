@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
         require: true,
         unique:true
     },
+    token:{
+        type:String,
+        default:""
+    },
     role:{
         type:String,
         require:true

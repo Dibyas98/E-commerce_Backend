@@ -1,6 +1,7 @@
 const userModel = require("../model/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { use } = require("../router/user");
 
 /*=================================USER REGISTATION CONTROLLER==============*/
 
@@ -23,7 +24,6 @@ const userRegistation = async (req, res) => {
 };
 
 /*====================================================================================*/
-/*====================================================================================*/
 
 
 
@@ -43,6 +43,8 @@ const userLogin = async (req, res) => {
             exp:expire
         }
         const token = jwt.sign(payload, process.env.JWT_SECRET_KEY)
+        // user.token = token
+        await userModel.findByIdAndUpdate(user._id,{token:token})
       res.json({
         success: true,
         message: "Login Successfully",
@@ -58,10 +60,29 @@ const userLogin = async (req, res) => {
     });
   }
 };
+/*===================================================================================*/
+
+const userLogout = async(req,res) =>{
+    try {
+
+        await userModel.findByIdAndUpdate(req.body.id, { token: "" });
+        res.json({
+            success:true,
+            message:"Logout Successfully"
+        })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+
 
 const controller = {
   userRegistation,
   userLogin,
+  userLogout
 };
 
 module.exports = controller;
