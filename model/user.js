@@ -1,13 +1,12 @@
 const mongoose = require('mongoose');
+const addressSchema = require('./address');
+const bcrypt = require("bcrypt")
 
 
 const userSchema = new mongoose.Schema({
     firstname : {
         type: String,
         require: true
-    },
-    middlename: {
-        type: String
     },
     lastname: {
         type: String,
@@ -17,6 +16,10 @@ const userSchema = new mongoose.Schema({
         type:String,
         require:true,
         unique:true
+    },
+    password:{
+        type:String,
+        require:true
     },
     mobile:{
         type:Number,
@@ -33,10 +36,17 @@ const userSchema = new mongoose.Schema({
         ref:'products'
     },
     address:{
-        type:addressSchema
+        type:addressSchema,
+        require:true
     }
     
 });
+
+userSchema.pre("save", function() {
+    const salt = bcrypt.genSaltSync(10);
+    const hash= bcrypt.hashSync(this.password,salt);
+    this.password = hash;
+})
 
 const userModel = mongoose.model("users",userSchema);
 module.exports = userModel;
