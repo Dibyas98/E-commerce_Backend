@@ -7,7 +7,8 @@ const app = express();
 /*=========================DATABASE CONNECTION==================*/
 dbCONNECT(process.env.DATABASE_URL);
 
-const userRoutes = require("./router/user")
+const userRoutes = require("./router/user");
+const productRoutes = require("./router/product");
 
 
 
@@ -18,6 +19,7 @@ app.use(express.json());
 
 
 app.use("/api/user",userRoutes)
+app.use("/api/product",productRoutes)
 
 /*==============SERVER CONNECTION PORT=========================*/
 

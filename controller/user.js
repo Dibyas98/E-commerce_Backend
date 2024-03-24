@@ -23,10 +23,6 @@ const userRegistation = async (req, res) => {
   }
 };
 
-/*====================================================================================*/
-
-
-
 /*=========================== USER LOGIN ==============================================*/
 const userLogin = async (req, res) => {
   try {
@@ -36,19 +32,19 @@ const userLogin = async (req, res) => {
       user.password
     );
     if (IsPasswordCorrect) {
-        const expire= Math.floor(new Date().getTime()/1000 + (12*3600));
-        const payload = {
-            id: user._id,
-            name: user.firstname+" "+user.lastname,
-            exp:expire
-        }
-        const token = jwt.sign(payload, process.env.JWT_SECRET_KEY)
-        // user.token = token
-        await userModel.findByIdAndUpdate(user._id,{token:token})
+      const expire = Math.floor(new Date().getTime() / 1000 + 12 * 3600);
+      const payload = {
+        id: user._id,
+        name: user.firstname + " " + user.lastname,
+        exp: expire,
+      };
+      const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
+      // user.token = token
+      await userModel.findByIdAndUpdate(user._id, { token: token });
       res.json({
         success: true,
         message: "Login Successfully",
-        token
+        token,
       });
     } else {
       throw new Error();
@@ -60,29 +56,25 @@ const userLogin = async (req, res) => {
     });
   }
 };
-/*===================================================================================*/
 
-const userLogout = async(req,res) =>{
-    try {
+/*=========================== USER LOGOUT ===========================================*/
 
-        await userModel.findByIdAndUpdate(req.body.id, { token: "" });
-        res.json({
-            success:true,
-            message:"Logout Successfully"
-        })
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-
-
-
+const userLogout = async (req, res) => {
+  try {
+    await userModel.findByIdAndUpdate(req.body.id, { token: "" });
+    res.json({
+      success: true,
+      message: "Logout Successfully",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const controller = {
   userRegistation,
   userLogin,
-  userLogout
+  userLogout,
 };
 
 module.exports = controller;
