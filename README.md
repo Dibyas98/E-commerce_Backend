@@ -66,8 +66,10 @@
 | `stock` | `string` | **Required**.|
 | `category` | `string` | **Required**.|
 
+#### Edit product
+
 ```http
-POST /api/product/edit_Product?id=660513bc73d2b929330542f6
+    POST /api/product/edit_Product?id=
 ```
 | parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
