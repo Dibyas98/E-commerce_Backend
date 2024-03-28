@@ -18,7 +18,7 @@ const userRegistation = async (req, res) => {
   } catch (error) {
     res.json({
       success: false,
-      message: "User not Regestation",
+      message: "User already Register",
     });
   }
 };
@@ -36,15 +36,17 @@ const userLogin = async (req, res) => {
       const payload = {
         id: user._id,
         name: user.firstname + " " + user.lastname,
+        role:user.role,
         exp: expire,
       };
       const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
       // user.token = token
-      await userModel.findByIdAndUpdate(user._id, { token: token });
+      // await userModel.findByIdAndUpdate(user._id, { token: token });
       res.json({
         success: true,
         message: "Login Successfully",
         token,
+        user
       });
     } else {
       throw new Error();
@@ -71,10 +73,37 @@ const userLogout = async (req, res) => {
   }
 };
 
+
+/*=========WISHLISTS============== */
+
+const wishList = async (req,res) =>{
+  console.log( req.query.product_Id);
+  try {
+    if(req.query.add){
+      await userModel.findByIdAndUpdate(req.user._id,{$pull: {wishlist : req.query.product_Id}}).populate("wishlist");
+      res.json({
+        success: true,
+        message:"WishList removed Successfully"
+      })
+
+    }else{
+      await userModel.findByIdAndUpdate(req.user._id,{$push: {wishlist : req.query.product_Id}}).populate("wishlist");
+      res.json({
+        success: true,
+        message:"WishList added Successfully"
+      })
+    }
+    
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 const controller = {
   userRegistation,
   userLogin,
   userLogout,
+  wishList
 };
 
 module.exports = controller;

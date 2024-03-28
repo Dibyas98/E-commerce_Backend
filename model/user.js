@@ -26,10 +26,6 @@ const userSchema = new mongoose.Schema({
         require: true,
         unique:true
     },
-    token:{
-        type:String,
-        default:""
-    },
     role:{
         type:String,
         require:true
@@ -37,7 +33,7 @@ const userSchema = new mongoose.Schema({
     wishlist:{
         type: [mongoose.Schema.Types.ObjectId],
         default:[],
-        ref:'products'
+        ref:'product'
     },
     address:{
         type:addressSchema,
@@ -52,7 +48,7 @@ userSchema.pre("save", function() {
     this.password = hash;
 })
 
-const userModel = mongoose.model("user",userSchema);
+const userModel = mongoose.model("users",userSchema);
 module.exports = userModel;
 
 
