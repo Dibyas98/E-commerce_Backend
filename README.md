@@ -15,7 +15,7 @@
 #### Create Account
 
 ```http
-  POST user/registation
+  POST /api/user/registation
 ```
 
 | body | Type     | Description                |
@@ -30,10 +30,66 @@
 #### Login Account
 
 ```http
-  get /user/login
+  GET /api/user/login
 ```
 
 | body | Type     | Description                |
 | :-------- | :------- | :------------------------- |
 | `email` | `string` | **Required**.|
 | `password` | `string` | **Required**.|
+
+#### Wishlist
+
+```http
+  POST /api/user/wishlist?product_Id=&add=
+```
+
+| parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `product_Id` | `string` | **Required**.|
+| `add` | `Boolean` | **Required**.|
+
+
+
+#### Create Product
+
+```http
+  POST /api/product/post_Product
+```
+
+| body | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `title` | `string` | **Required**.|
+| `description` | `string` | **Required**.|
+| `price` | `string` | **Required**.|
+| `brand` | `string` | **Required**.|
+| `stock` | `string` | **Required**.|
+| `category` | `string` | **Required**.|
+
+```http
+POST /api/product/edit_Product?id=660513bc73d2b929330542f6
+```
+| parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `id` | `string` | **Required**.|
+
+| headers | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `jwt token` | **Required**.|
+
+| body | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `update Object` | `object` | **Required**.|
+
+```http
+    POST /api/product/:actions
+```
+| parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `actions` | `string` | **Required**.`likes/dislikes`|
+
+| body | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `productId` | `string` | **Required**.|
+| `userId`  | `String`  | **Required**|
+
