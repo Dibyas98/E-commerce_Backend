@@ -33,10 +33,11 @@ const userSchema = new mongoose.Schema({
     wishlist:{
         type: [mongoose.Schema.Types.ObjectId],
         default:[],
-        ref:'product'
+        ref:"products"
     },
     address:{
         type:addressSchema,
+        
         require:true
     }
     

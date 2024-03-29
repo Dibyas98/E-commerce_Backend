@@ -16,6 +16,7 @@ const userRegistation = async (req, res) => {
       message: "User registation successfully",
     });
   } catch (error) {
+    console.log(error);
     res.json({
       success: false,
       message: "User already Register",
@@ -26,7 +27,7 @@ const userRegistation = async (req, res) => {
 /*=========================== USER LOGIN ==============================================*/
 const userLogin = async (req, res) => {
   try {
-    const user = await userModel.findOne({ email: req.body.email });
+    const user = await userModel.findOne({ email: req.body.email }).populate({path : "wishlist"});
     const IsPasswordCorrect = bcrypt.compareSync(
       req.body.password,
       user.password
@@ -87,7 +88,7 @@ const wishList = async (req,res) =>{
       })
 
     }else{
-      await userModel.findByIdAndUpdate(req.user._id,{$push: {wishlist : req.query.product_Id}}).populate("wishlist");
+      await userModel.findByIdAndUpdate(req.user._id,{$push: {wishlist : req.query.product_Id}})
       res.json({
         success: true,
         message:"WishList added Successfully"
@@ -99,11 +100,51 @@ const wishList = async (req,res) =>{
   }
 }
 
+const newAddress = async(req,res)=>{
+  try {
+    console.log(req.user);
+    const new_address={
+      $push :{
+        address :req.body
+      }
+    }
+    await userModel.findByIdAndUpdate(req.user._id,new_address)
+        res.json({
+      success:true,
+      message: "Address saved successfuly"
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      success:false,
+      message :"User address couldn't save"
+    })
+    
+  }
+}
+
+const deleteAddress = async(req,res) =>{
+  try {
+    await userModel.findByIdAndUpdate(req.user._id,{$pull : {address: {_id: req.params.address_Id}}});
+    res.json({
+      success:true
+    })
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success:false,
+      message:"Address couldnot delete"
+    })
+  }
+}
+
 const controller = {
   userRegistation,
   userLogin,
   userLogout,
-  wishList
+  wishList,
+  newAddress,
+  deleteAddress
 };
 
 module.exports = controller;

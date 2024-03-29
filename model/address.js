@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const addressSchema = new mongoose.Schema({
+const addressSchema = new mongoose.Schema([{
     address: {
         type: String,
         required: false,
@@ -21,6 +21,6 @@ const addressSchema = new mongoose.Schema({
         requied: true,
         default: "",
       },
-});
+}]);
 
 module.exports = addressSchema

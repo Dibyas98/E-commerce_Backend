@@ -18,8 +18,8 @@ app.use(express.json());
 
 
 
-app.use("/api/user",userRoutes)
-app.use("/api/product",productRoutes)
+app.use("/api/user",userRoutes);
+app.use("/api/product",productRoutes);
 
 /*==============SERVER CONNECTION PORT=========================*/
 

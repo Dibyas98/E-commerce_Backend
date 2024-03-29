@@ -72,11 +72,39 @@ const searchProductId = async (req, res) => {
   }
 };
 
+/*=============PRODUCT REVIEWS========== */
+const reviewProduct = async (req, res) => {
+  try {
+    // console.log(req.boby);
+    const reviewObject = {
+      $push : {
+        reviews:{
+          rating:req.body.rating,
+          comment:req.body.comment,
+          userId:req.user
+        }
+      }
+    }
+    await productModel.findByIdAndUpdate(req.params.product_Id,reviewObject);
+    res.json({
+      success: true,
+      message: "Review product Successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      success:false,
+      message: "Review produvt unsuccessfully"
+    })
+  } 
+};
+
 const controller = {
   createProduct,
   editProduct,
   productList,
   searchProductId,
+  reviewProduct
 };
 
 module.exports = controller;
